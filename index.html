@@ -1,5 +1,54 @@
 <html>
-  In this tutorial we will understand how to create a dashboard to show phylogenetic and phylogeographic relationships.
+Website for Nextstrain tutorial:
+https://random-user-s.github.io/Nextstrain_RSV_tutorial/
+
+Introduction
+Nextstrain is a bioinformatic tool useful in the context of virology and infectious disease surveillance. It helps to create a phylogenetic and phylogeographic analysis on a real-time scale.
+Nextstrain has two components: Augur and Auspice. Augur is used for the analysis while Auspice is a server that displays the phylogenetics and phylogeographics. 
+This article will describe the process of using Linux/ Windows Subsystem for Linux (WSL) to use the tool and establish a real-time analysis.
+
+To follow this tutorial one needs to have the following installed in their PC:
+1) Linux or Windows Subsystem for Linux (WSL)
+2) Conda environment within Linux/WSL or Docker
+
+If you already have these then skip to the Installing NextStrain part.
+The detailed guide on completing the prerequisites is given as follows:
+1) WSL Installation
+Most individuals work with their personal laptops with a Windows operating system. Keeping that in mind, WSL can be used for this purpose.
+But unfortunately, most bioinformatic tools are Linux-based. So, WSL is a common approach to utilize the Windows operating system to run Linux. 
+The most popular Linux distribution is Ubuntu. The base system is about 1-2GB but it needs 4-5GB of disk space to operate. You need a stable internet connection.
+1.1) To install the OS as a part of WSL first open the command prompt. This can be done by pressing Windows + R on the keyboard. Type cmd and press Enter.
+1.2) Type wsl --install and press Enter. Click ‘Yes’ on the dialogue box.
+Let the installation begin. Click ‘Yes’ on the dialogue box when prompted. Wait for the installation to complete.
+You can look at different distributions that can be installed using wsl --list --online. By default, Ubuntu is going to be installed, which is just fine for bioinformatics. For example, if you want Debian to be installed you can type wsl --install -d Debian and finish the installation.
+1.3) Once the installation is completed you have to restart the PC (it will also be mentioned if the installation was successful).
+1.4) After the restart, press Windows key and type ‘ubuntu’ and open the Ubuntu app. Set username as prompted. Set password as prompted. 
+Congrats! You are an owner of a new operating system. 
+
+To close the terminal you can type exit and press Enter.
+To run your Ubuntu distribution in terminal you can open up the command prompt and type ubuntu run and press Enter. To logout of the shell you can use the keyboard shortcut Ctrl+D.
+
+
+2) Installation of Conda and Docker and Getting Started
+What is conda?
+Conda is an environment. It is used to install all the packages in a project in an isolated environment so it does not interfere with other packages.
+What is docker?
+Docker has containers that help running an application with all its dependencies. It has higher resource usage though.
+
+Conda:
+conda create -n nex
+
+Docker: 
+Install Docker Desktop from https://docs.docker.com/desktop/install/windows-install/ 
+
+Using WSL and PowerShell:
+Make sure that WSL is already installed.
+Install the Nextstrain Invoke-RestMethod https://nextstrain.org/cli/installer/windows | Invoke-Expression
+Open Windows PowerShell. From PowerShell you can download the docker images with the command nextstrain setup –set-default docker. Let the installation complete.
+
+To check for the installation you should launch the Nextstrain shell using the nextstrain shell . command.
+
+
 <h1>Work in Progress!</h1>
 </html>
   
