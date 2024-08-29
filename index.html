@@ -255,6 +255,42 @@
 
 
 </div>
+<p> Title:
+
+<code>"title": "RSV Tutorial"</code>
+This specifies the title of the visualization that will appear in Auspice. It helps identify the dataset you're working with.
+</p>
+<p>
+Maintainers:
+
+<code>"maintainers": [{"name": "Sagnik"}]</code>
+This section lists the maintainers of the dataset. Instead of my name, put your name. You can also include multiple maintainers.
+</p>
+<p>
+Colorings:
+
+<code>"colorings": [...]</code>
+This section defines how different attributes of the data will be colored in the visualization. Each object within this array corresponds to a specific attribute:
+<br><code>"key": "genotype"</code>: Specifies the attribute to be colored.
+<br><code>"title": "Genotype"</code>: Title for the coloring that will be displayed in the Auspice UI.
+<br><code>"type": "categorical"</code>: Type of data, which can be categorical (distinct categories like Genotype, Country) or continuous (like Date).
+</p>
+<p>
+Geo Resolutions:
+
+<code>"geo_resolutions": ["country"]</code>
+Defines the geographical resolution for the map visualization. In this case, it focuses on the country level.
+</p>
+<p>
+Panels:
+
+<code>"panels": ["tree", "map"]</code>
+Lists the types of visualizations (or "panels") that will be displayed. Here, a phylogenetic tree and a geographical map are included.
+
+</p>
+Filters:
+<code>"filters": ["country"]</code>
+Defines which attributes can be used as filters in the Auspice interface. In this example, users can filter the data by country.</p>
 
 <br>
 <p> The <code>lat_longs.tsv</code> file should look like this: </p>
@@ -297,6 +333,7 @@
 </tr>
 
 </table>
+<p> You can get a csv coordinates file for all countries from this <a href="https://developers.google.com/public-data/docs/canonical/countries_csv">site</a>. However, ensure that your csv file has country names which are same as your metadata file.</p>
 <br>
 <p> The <code>colors.tsv</code> file should look like this: </p>
 <table style="width:100%" id="table">
@@ -332,18 +369,21 @@
 </tr>
 </table>
 </p>
+<br>
+<p>You might want to index your sequences first but it doesn't matter for this tutorial since we have very small data.</p>
+<br>
 <h2> 5. Filter the sequences </h2>
-<p>To filter the sequences with a size constraint, run the following command. RSV has a genome size of about 15.2 kb, so we can filter out the smaller sequences with the <code>--min-length 15000</code> argument.</p>
+<p>Enter the nextstrain shell typing <code>nextstrain shell .</code> in your ubuntu terminal. To filter the sequences with a size constraint, run the following command. RSV has a genome size of about 15.2 kb, so we can filter out the smaller sequences with the <code>--min-length 15000</code> argument.</p>
 
-<div class="code-block">
+<code>
 augur filter --metadata metadata.tsv --sequences sequences.fasta --min-length 15000 --output filtered_sequences.fasta
-</div>
+</code>
 
 <p>To test if any sequences have been excluded in the <code>filtered_sequences.fasta</code> file, use this command:</p>
 
-<div class="code-block">
+<code>
 grep -o ">" filtered_sequences.fasta | wc -l
-</div>
+</code>
 
 <p>The output will be <code>6</code>, meaning 1 sequence has been filtered out. You can open the FASTA file in any editor such as Notepad or software such as MEGA11 to find out which sequences were eliminated.</p>
 
@@ -353,9 +393,9 @@ grep -o ">" filtered_sequences.fasta | wc -l
 
 <p>Here's the command:</p>
 
-<div class="code-block">
+<code>
 augur align --sequences filtered_sequences.fasta --reference-sequence reference.fasta --output results/aligned.fasta --fill-gaps
-</div>
+</code>
 
 <p>Sometimes, if you want to drop the reference sequence from the output, add the <code>--remove-reference</code> argument to the above command.</p>
 
@@ -363,17 +403,17 @@ augur align --sequences filtered_sequences.fasta --reference-sequence reference.
 
 <h2>7. Tree Construction</h2>
 
-<p>Use this command to make a raw tree:</p>
+<p>We would like to make a phylogenetic tree. The defualt tool used is IQ-Tree. Use this command to make a raw tree first:</p>
 
-<div class="code-block">
+<code>
 augur tree --alignment results/aligned.fasta --output results/tree_raw.nwk
-</div>
+</code>
 
 <p>Refine the tree using this command:</p>
 
-<div class="code-block">
+<code>
 augur refine --tree results/tree_raw.nwk --alignment results/aligned.fasta --metadata metadata.tsv --output-tree results/tree.nwk --output-node-data results/branch_lengths.json --timetree --coalescent opt --date-confidence --date-inference marginal --clock-rate 0.00077 --stochastic-resolve
-</div>
+</code>
 
 <p>We have used the clock rate <code>0.00077</code> or <code>7.7 x 10^-4 subs/base/year</code>.</p>
 
@@ -381,24 +421,26 @@ augur refine --tree results/tree_raw.nwk --alignment results/aligned.fasta --met
 
 <p>Now, it is time to create the JSON file. Use this command:</p>
 
-<div class="code-block">
+<code>
 augur export v2 --tree results/tree.nwk --metadata metadata.tsv --node-data results/branch_lengths.json --colors config/colors.tsv --lat-longs config/lat_longs.tsv --auspice-config config/auspice_config.json --output auspice/rsv.json
-</div>
+</code>
 
 <h2>9. Visualizing the Data</h2>
 
 <p>The final step is to visualize the data, done using the <code>nextstrain view</code> command followed by the name of the directory and file. It is usually:</p>
 
-<div class="code-block">
+<code>
 nextstrain view auspice/
-</div>
+</code>
 
 <p>This command will visualize all the datasets within the directory.</p>
 
 <p><strong>Note:</strong> It is seen that you have to get out of the Nextstrain shell to use this command. However, in some cases, it works inside the Nextstrain shell. To open the link, you need to manually press <code>Ctrl</code> and click on <u>http://127.0.0.1:4000/rsv</u>.</p>
 
-<img src="images/auspice_image.png" alt="Auspice Visualization">
-<img src="images/auspice_image_clade.png" alt="Auspice Clade Visualization">
+<img src="images/auspice_image.png" alt="Auspice Visualization" width="500"> <p> This is how it should look like. </p>
+<img src="images/auspice_image_clade.png" alt="Auspice Clade Visualization" width="500"> <p> Colouring using clades instead of countries. </p>
+<p>
+Also, since we did not mention the details for the reference sequence they are not visible here. </p>
 <h2>Conclusion</h2>
 <p>This tutorial provided a step-by-step guide to set up and run a real-time analysis of RSV using Nextstrain. You can now visualize your own data. Remember to refer to the official Nextstrain documentation for a more detailed understanding.</p>
 
