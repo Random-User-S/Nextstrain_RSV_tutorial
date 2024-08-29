@@ -1,11 +1,417 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nextstrain Tutorial</title>
+    <link rel="stylesheet" href="style.css">
+	
 </head>
+
 <body>
-   Work in Progress! Will update soon!
+    <div class="container">
+<h1>Nextstrain Tutorial: Real-Time Phylogenetic and Phylogeographic Analysis for RSV</h1>
+
+<h2>Introduction</h2>
+<p>Nextstrain is a powerful bioinformatics tool designed for real-time tracking and analysis of pathogen evolution, with a particular focus on virology and infectious disease surveillance. It provides a platform for creating phylogenetic and phylogeographic analyses that are visually accessible, helping researchers monitor outbreaks, track pathogen mutations, and inform public health responses.</p>
+<p>Nextstrain is composed of two main components:</p>
+<ul>
+    <li><strong>Augur</strong>: A bioinformatics toolkit used for performing the analyses, such as sequence alignment, phylogenetic tree construction, and ancestral trait reconstruction.</li>
+    <li><strong>Auspice</strong>: A web-based visualization tool that displays the results of the analyses performed by Augur.</li>
+</ul>
+<p>This tutorial will guide you through using Nextstrain on a Linux system or Windows Subsystem for Linux (WSL). We will focus on creating a pathogen repository and conducting real-time analysis on Respiratory Syncytial Virus (RSV).</p>
+<p>For more detailed information on Nextstrain, you can refer to their <a href="https://docs.nextstrain.org/" target="_blank">official documentation</a>.</p>
+
+<h2>Prerequisites</h2>
+<p>Before diving into the tutorial, ensure that you have the following installed on your system:</p>
+<ol>
+    <li><strong>Linux</strong> or <strong>Windows Subsystem for Linux (WSL)</strong></li>
+    <li><strong>Conda</strong> environment within Linux/WSL or <strong>Docker</strong></li>
+</ol>
+<p>If these are already set up on your system, you can skip to the "Installing Nextstrain" section. Otherwise, follow the detailed guide below to complete the prerequisites.</p>
+
+<h2>1. Installing WSL</h2>
+<p>Most users operate on a Windows system, where WSL can be utilized to run Linux-based bioinformatics tools. The most commonly used Linux distribution for this purpose is Ubuntu. The installation process requires a stable internet connection and approximately 4-5 GB of disk space.</p>
+
+<h3>Steps to Install WSL:</h3>
+<ol>
+    <li><strong>Open Command Prompt:</strong>
+        <ul>
+            <li>Press <code>Windows + R</code> on your keyboard, type <code>cmd</code>, and press <code>Enter</code>.</li>
+        </ul>
+    </li>
+    <li><strong>Install WSL:</strong>
+        <ul>
+            <li>In the command prompt, type the following command and press <code>Enter</code>:</li>
+            <pre><code>wsl --install</code></pre>
+            <li>Follow the on-screen instructions and click ‘Yes’ when prompted. The default Linux distribution, Ubuntu, will be installed.</li>
+            <li><em>Optional</em>: To view and install other distributions, use:</li>
+            <pre><code>wsl --list --online</code></pre>
+            <li>For example, to install Debian, use:</li>
+            <pre><code>wsl --install -d Debian</code></pre>
+        </ul>
+    </li>
+    <li><strong>Restart Your PC:</strong>
+        <ul>
+            <li>After the installation, restart your computer as prompted.</li>
+        </ul>
+    </li>
+    <li><strong>Set Up Ubuntu:</strong>
+        <ul>
+            <li>After restarting, open the Ubuntu app by typing ‘ubuntu’ in the Windows search bar.</li>
+            <li>Set up your username and password as prompted.</li>
+        </ul>
+    </li>
+</ol>
+<p>Congratulations! You now have a Linux operating system running on your Windows machine.</p>
+
+<h3>Running and Closing Ubuntu:</h3>
+<ul>
+    <li>To run Ubuntu, open Command Prompt and type:</li>
+    <pre><code>ubuntu</code></pre>
+    <li>To exit the terminal, type:</li>
+    <pre><code>exit</code></pre>
+</ul>
+
+<h2>2. Installing Conda and Docker</h2>
+
+<h3>What is Conda?</h3>
+<p>Conda is a package manager and environment management system. It allows you to create isolated environments for different projects, ensuring that dependencies do not interfere with one another.</p>
+
+<h3>What is Docker?</h3>
+<p>Docker provides a containerized environment, allowing you to run applications with all their dependencies in a consistent environment across different systems.</p>
+
+<h3>Installing Conda:</h3>
+<p>To create a Conda environment for Nextstrain, use the following command:</p>
+<pre><code>conda create -n nex</code></pre>
+
+<h3>Installing Docker:</h3>
+<ol>
+    <li>Download and install Docker Desktop from <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank">Docker's official site</a>.</li>
+    <li>Ensure that WSL is installed and running.</li>
+    <li>Open Windows PowerShell and install the Nextstrain CLI using the following command:</li>
+    <pre><code>Invoke-RestMethod https://nextstrain.org/cli/installer/windows | Invoke-Expression</code></pre>
+    <li>Set up Docker for Nextstrain:</li>
+    <pre><code>nextstrain setup --set-default docker</code></pre>
+    <li>Allow the installation to complete.</li>
+</ol>
+
+<h3>Checking the Installation:</h3>
+<p>Launch the Nextstrain shell using the command:</p>
+<pre><code>nextstrain shell .</code></pre>
+
+<h2>3. Dataset Preparation</h2>
+
+<h3>3.1 Downloading and Preparing Sequence Data:</h3>
+
+<ol>
+    <li><strong>Download RSV Sequences:</strong>
+        <ul>
+            <li>Navigate to the <a href="https://www.ncbi.nlm.nih.gov/" target="_blank">NCBI website</a>.</li>
+            <li>Enter the following accession numbers into the search box: <code>PP151342.1, JF920065.1, KJ939919.1, KP258710.1, KY249658.1, OR288010.1, PP377489.1</code>.</li>
+            <li>Use the "Send to" dropdown to select "Complete Record," choose "File," and set the format to FASTA. Download the file and rename it to <code>sequences.fasta</code>.</li>
+        </ul>
+    </li>
+    <li><strong>Processing FASTA Headers:</strong>
+        <ul>
+            <li>Go to the <a href="https://users-birc.au.dk/~palle/php/fabox/index.php" target="_blank">FaBox website</a>.</li>
+            <li>Use the "Fasta header extractor (and header splitter)" tool to process the headers:
+                <ul>
+                    <li>Open <code>sequences.fasta</code> in a text editor like Notepad or Vim.</li>
+                    <li>Copy and paste all sequences into the FaBox input box.</li>
+                    <li>In the Settings box, remove the <code>|</code> character and replace it with a space (<code> </code>).</li>
+                    <li>Extract and download the TSV file.</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><strong>Replacing FASTA Headers:</strong>
+        <ul>
+            <li>Open the TSV file in Excel and copy the column containing the headers.</li>
+            <li>Go to the <a href="https://users-birc.au.dk/~palle/php/fabox/header_replacer.php" target="_blank">FaBox header replacer</a>.</li>
+            <li>Paste your sequences and headers into the respective text boxes and click "Replace headers."</li>
+        </ul>
+    </li>
+    <li><strong>Download the Reference Genome:</strong>
+        <ul>
+            <li>Visit <a href="https://www.ncbi.nlm.nih.gov/datasets/taxonomy/11250/" target="_blank">NCBI's dataset page</a> and download the reference genome "ViralProj15004."</li>
+        </ul>
+    </li>
+</ol>
+
+<h2>4. Folder Setup</h2>
+<p>Create a folder named <code>rsv_nextstrain</code> and organize the following files within it:</p>
+<ul>
+    <li><code>metadata.tsv</code></li>
+    <li><code>sequences.fasta</code></li>
+    <li><code>reference.fasta</code></li>
+</ul>
+<p>Create three subfolders within <code>rsv_nextstrain</code>: <code>config</code>, <code>auspice</code>, and <code>results</code>. The <code>config</code> folder should contain the following three files:</p>
+<ul>
+    <li><code>auspice_config.json</code></li>
+    <li><code>colors.tsv</code></li>
+    <li><code>lat_longs.tsv</code></li>
+</ul>
+<p>
+	<p> The <code>metadata.tsv</code> file should look like this: </p>
+<table style="width:100%" id="table">
+  <tr>
+    <td>strain</td>
+    <td>virus</td>
+    <td>date</td>
+    <td>country</td>
+    <td>clade_membership</td>
+  </tr>
+  <tr>
+    <td>PP151342.1</td>
+    <td>rsv</td>
+    <td>Sep-21</td>
+    <td>Kuwait</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>JF920065.1</td>
+    <td>rsv</td>
+    <td>09-Jan-98</td>
+    <td>United States</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>KJ939919.1</td>
+    <td>rsv</td>
+    <td>30-Jul-09</td>
+    <td>Vietnam</td>
+    <td>B</td>
+  </tr>
+  <tr>
+    <td>KP258710.1</td>
+    <td>rsv</td>
+    <td>1991</td>
+    <td>United States</td>
+    <td>A</td>
+</tr>
+<tr>
+    <td>KY249658.1</td>
+    <td>rsv</td>
+    <td>30-Dec-13</td>
+    <td>United Kingdom</td>
+    <td>B</td>
+</tr>
+<tr>
+    <td>OR288010.1</td>
+    <td>rsv</td>
+    <td>24-02-2019</td>
+    <td>Zambia</td>
+    <td>A</td>
+</tr>
+<tr>
+    <td>PP377489.1</td>
+    <td>rsv</td>
+    <td>09-05-2019</td>
+    <td>South Africa</td>
+    <td>B</td>
+</tr>
+
+</table>
+<br>
+<p>The <code>auspice_config.json</code> file should look like this: </p>
+<div style="background-color: #f5f5f5; border-radius: 3px; padding: 10px; font-family: 'Courier New', Courier, monospace;font-size: 80%;">
+    {<br>
+  "title": "RSV Tutorial",<br>
+  "maintainers": [<br>
+    {<br>
+      "name": "Sagnik"<br>
+    }<br>
+  ],<br>
+  "colorings": [<br>
+    {<br>
+      "key": "num_date",<br>
+      "title": "Date",<br>
+      "type": "categorical"<br>
+    },<br>
+    {<br>
+      "key": "country",<br>
+      "title": "Country",<br>
+      "type": "categorical"<br>
+    },<br>
+    {<br>
+      "key": "clade_membership",<br>
+      "title": "Clade",<br>
+      "type": "categorical"<br>
+    }<br>
+  ],<br>
+  "geo_resolutions": [<br>
+    "country"<br>
+  ],<br>
+  "panels": [<br>
+    "tree",<br>
+    "map"<br>
+  ],<br>
+  "filters": [<br>
+    "country"<br>
+  ]<br>
+}
+
+
+</div>
+
+<br>
+<p> The <code>lat_longs.tsv</code> file should look like this: </p>
+<table style="width:100%" id="table">
+<tr>
+    <td>country</td>
+    <td>Kuwait</td>
+    <td>29.31166</td>
+    <td>47.48177</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>United States</td>
+    <td>37.09024</td>
+    <td>-95.7129</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>Vietnam</td>
+    <td>14.05832</td>
+    <td>108.2772</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>United Kingdom</td>
+    <td>55.37805</td>
+    <td>-3.43597</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>Zambia</td>
+    <td>-13.1339</td>
+    <td>27.84933</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>South Africa</td>
+    <td>-30.5595</td>
+    <td>22.93751</td>
+</tr>
+
+</table>
+<br>
+<p> The <code>colors.tsv</code> file should look like this: </p>
+<table style="width:100%" id="table">
+<tr>
+    <td>country</td>
+    <td>Kuwait</td>
+    <td>#FF0000</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>South Africa</td>
+    <td>#00FF00</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>United Kingdom</td>
+    <td>#0000FF</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>United States</td>
+    <td>#FFFF00</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>Vietnam</td>
+    <td>#00FFFF</td>
+</tr>
+<tr>
+    <td>country</td>
+    <td>Zambia</td>
+    <td>#FF00FF</td>
+</tr>
+</table>
+</p>
+<h2> 5. Filter the sequences </h2>
+<p>To filter the sequences with a size constraint, run the following command. RSV has a genome size of about 15.2 kb, so we can filter out the smaller sequences with the <code>--min-length 15000</code> argument.</p>
+
+<div class="code-block">
+augur filter --metadata metadata.tsv --sequences sequences.fasta --min-length 15000 --output filtered_sequences.fasta
+</div>
+
+<p>To test if any sequences have been excluded in the <code>filtered_sequences.fasta</code> file, use this command:</p>
+
+<div class="code-block">
+grep -o ">" filtered_sequences.fasta | wc -l
+</div>
+
+<p>The output will be <code>6</code>, meaning 1 sequence has been filtered out. You can open the FASTA file in any editor such as Notepad or software such as MEGA11 to find out which sequences were eliminated.</p>
+
+<h2>6. Alignment Task</h2>
+
+<p>Next, we will move on to the alignment task. If you already have an aligned file, you can choose that. However, we will align with augur here. The only supported alignment method is <code>mafft</code>. Additionally, you can choose to have the reference omitted from the alignment.</p>
+
+<p>Here's the command:</p>
+
+<div class="code-block">
+augur align --sequences filtered_sequences.fasta --reference-sequence reference.fasta --output results/aligned.fasta --fill-gaps
+</div>
+
+<p>Sometimes, if you want to drop the reference sequence from the output, add the <code>--remove-reference</code> argument to the above command.</p>
+
+<p><strong>Note:</strong> If you have a lot of sequences and want to alter the performance, using the argument <code>--nthreads</code> will help. You can find how many cores your computer has using the <code>nproc</code> command in Linux.</p>
+
+<h2>7. Tree Construction</h2>
+
+<p>Use this command to make a raw tree:</p>
+
+<div class="code-block">
+augur tree --alignment results/aligned.fasta --output results/tree_raw.nwk
+</div>
+
+<p>Refine the tree using this command:</p>
+
+<div class="code-block">
+augur refine --tree results/tree_raw.nwk --alignment results/aligned.fasta --metadata metadata.tsv --output-tree results/tree.nwk --output-node-data results/branch_lengths.json --timetree --coalescent opt --date-confidence --date-inference marginal --clock-rate 0.00077 --stochastic-resolve
+</div>
+
+<p>We have used the clock rate <code>0.00077</code> or <code>7.7 x 10^-4 subs/base/year</code>.</p>
+
+<h2>8. Creating the JSON File</h2>
+
+<p>Now, it is time to create the JSON file. Use this command:</p>
+
+<div class="code-block">
+augur export v2 --tree results/tree.nwk --metadata metadata.tsv --node-data results/branch_lengths.json --colors config/colors.tsv --lat-longs config/lat_longs.tsv --auspice-config config/auspice_config.json --output auspice/rsv.json
+</div>
+
+<h2>9. Visualizing the Data</h2>
+
+<p>The final step is to visualize the data, done using the <code>nextstrain view</code> command followed by the name of the directory and file. It is usually:</p>
+
+<div class="code-block">
+nextstrain view auspice/
+</div>
+
+<p>This command will visualize all the datasets within the directory.</p>
+
+<p><strong>Note:</strong> It is seen that you have to get out of the Nextstrain shell to use this command. However, in some cases, it works inside the Nextstrain shell. To open the link, you need to manually press <code>Ctrl</code> and click on <u>http://127.0.0.1:4000/rsv</u>.</p>
+
+<img src="images/auspice_image.png" alt="Auspice Visualization">
+<img src="images/auspice_image_clade.png" alt="Auspice Clade Visualization">
+<h2>Conclusion</h2>
+<p>This tutorial provided a step-by-step guide to set up and run a real-time analysis of RSV using Nextstrain. You can now visualize your own data. Remember to refer to the official Nextstrain documentation for a more detailed understanding.</p>
+
+<div class="comments-section">
+            <h2>Let us know what you think</h2>
+            <p style="margin-top: 30px">
+    For any inquiries, feel free to contact me at 
+    <a href="mailto:pages@example.com">pages@example.com</a>.
+</p>
+        </div>
+    
+	
+	</div>
 </body>
+
 </html>
