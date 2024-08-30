@@ -112,7 +112,7 @@ If you prefer to use docker, then proceed with the following steps.
     <pre><code>nextstrain setup --set-default docker</code></pre>
     <li>Allow the installation to complete.</li>
 </ol>
-<img src="images/docker_setup.png" alt="docker setup" width="500"> <p> The output should be should look like after installation. </p>
+<img src="images/docker_setup.png" alt="docker setup" width="500"> <p> After installation, you should see this. </p>
 
 <h3>Checking the Installation:</h3>
 <p>Launch the Nextstrain shell using the command:</p>
@@ -120,8 +120,8 @@ If you prefer to use docker, then proceed with the following steps.
 
 <h2>3. Dataset Preparation</h2>
 
-<h3>3.1 Downloading and Preparing Sequence Data:</h3>
-
+<p>This is for creating a dataset to try the Nextstrain tool. You can choose any pathogen and download and prepare sequence data:</p>
+<p>We are using RSV here because it has a pretty small RNA genome (~15.2 kb). </p>
 <ol>
     <li><strong>Download RSV Sequences:</strong>
         <ul>
@@ -130,8 +130,11 @@ If you prefer to use docker, then proceed with the following steps.
             <li>Use the "Send to" dropdown to select "Complete Record," choose "File," and set the format to FASTA. Download the file and rename it to <code>sequences.fasta</code>.</li>
         </ul>
     </li>
+<img src="images/ncbi.png" alt="ncbi" width="500"> <p> The output should look like this after installation. </p>
     <li><strong>Processing FASTA Headers:</strong>
-        <ul>
+<p>You can manually edit the headers to match with those in the strain column of metadata file (described below). But for large data, you can follow the following steps.
+</p>
+		<ul>
             <li>Go to the <a href="https://users-birc.au.dk/~palle/php/fabox/index.php" target="_blank">FaBox website</a>.</li>
             <li>Use the "Fasta header extractor (and header splitter)" tool to process the headers:
                 <ul>
@@ -150,26 +153,28 @@ If you prefer to use docker, then proceed with the following steps.
             <li>Paste your sequences and headers into the respective text boxes and click "Replace headers."</li>
         </ul>
     </li>
-    <li><strong>Download the Reference Genome:</strong>
+    <li><strong>Download the Reference Genome in either fasta format or GenBank format:</strong>
         <ul>
             <li>Visit <a href="https://www.ncbi.nlm.nih.gov/datasets/taxonomy/11250/" target="_blank">NCBI's dataset page</a> and download the reference genome "ViralProj15004."</li>
         </ul>
     </li>
 </ol>
 
-<h2>4. Folder Setup</h2>
-<p>While it is not mandatory to create a folder structure like this, it is so that we are on the same page. Create a folder named <code>rsv_nextstrain</code> and organize the following files within it:</p>
+<h2>4. Creating Necessary Files and Folder Setup</h2>
+<p>Create a folder named <code>rsv_nextstrain</code> and organize the following files within it:</p>
 <ul>
     <li><code>metadata.tsv</code></li>
     <li><code>sequences.fasta</code></li>
     <li><code>reference.fasta</code></li>
 </ul>
+<img src="images/folder.png" alt="folder" width="500"> <p> The <code>rsv_nextstrain</code> folder should have these files. </p>
 <p>Create three subfolders within <code>rsv_nextstrain</code>: <code>config</code>, <code>auspice</code>, and <code>results</code>. The <code>config</code> folder should contain the following three files:</p>
 <ul>
     <li><code>auspice_config.json</code></li>
     <li><code>colors.tsv</code></li>
     <li><code>lat_longs.tsv</code></li>
 </ul>
+<img src="images/config.png" alt="config" width="500"> <p> The config folder should have these files. </p>
 <p>
 	<p> The <code>metadata.tsv</code> file should look like this: </p>
 <table style="width:100%" id="table">
