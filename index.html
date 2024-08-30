@@ -395,7 +395,8 @@ Defines which attributes can be used as filters in the Auspice interface. In thi
 <p>You might want to index your sequences first but it doesn't matter for this tutorial since we have very small data.</p>
 <br>
 <h2> 5. Filter the sequences </h2>
-<p>Enter the nextstrain shell typing <code>nextstrain shell .</code> in your ubuntu terminal. To filter the sequences with a size constraint, run the following command. RSV has a genome size of about 15.2 kb, so we can filter out the smaller sequences with the <code>--min-length 15000</code> argument.</p>
+<p>Enter the nextstrain shell typing <code>nextstrain shell .</code> in your ubuntu terminal. RSV has a genome size of about 15.2 kb, so we can filter out the smaller sequences with the <code>--min-length 15000</code> argument.</p>
+To filter the sequences with a size constraint, run the following command:
 
 <code>
 augur filter --metadata metadata.tsv --sequences sequences.fasta --min-length 15000 --output filtered_sequences.fasta
@@ -407,7 +408,7 @@ augur filter --metadata metadata.tsv --sequences sequences.fasta --min-length 15
 grep -o ">" filtered_sequences.fasta | wc -l
 </code>
 
-<p>The output will be <code>6</code>, meaning 1 sequence has been filtered out. You can open the FASTA file in any editor such as Notepad or software such as MEGA11 to find out which sequences were eliminated.</p>
+<p>The output will be 6, meaning 1 sequence has been filtered out from our initial dataset. You can open the FASTA file in any editor such as Notepad or software such as MEGA11 to find out which sequence was eliminated.</p>
 
 <h2>6. Alignment Task</h2>
 
