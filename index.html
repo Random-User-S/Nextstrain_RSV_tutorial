@@ -392,7 +392,10 @@ Defines which attributes can be used as filters in the Auspice interface. In thi
 </table>
 </p>
 <br>
-<p>You might want to index your sequences first but it doesn't matter for this tutorial since we have very small data.</p>
+<h3>(Indexing)</h3>
+<p>You might want to index your sequences first, but it doesn't matter for this tutorial since we have very small data.</p>
+<p>This can be used for indexing: </p>
+<code>augur index --sequences data/sequences.fasta --output results/sequence_index.tsv </code>
 <br>
 <h2> 5. Filter the sequences </h2>
 <p>Enter the nextstrain shell typing <code>nextstrain shell .</code> in your ubuntu terminal. RSV has a genome size of about 15.2 kb, so we can filter out the smaller sequences with the <code>--min-length 15000</code> argument.
