@@ -96,7 +96,7 @@ Follow the prompts to install conda. After it is installed, run <code>conda --ve
 </p>
 <code>nextstrain setup --set-default conda --force</code>
 <p> I use the <code>--force</code> argument, but it is optional. </p>
-<img src="images/conda_setup.png" alt="conda setup" width="500"> <p> The output should be should look like after installation. </p>
+<img src="images/conda_setup.png" alt="conda setup" width="500"> <figcaption>The output should be should look like after installation.</figcaption>
 <br>
 
 <h3>Installing Docker:</h3>
@@ -130,7 +130,7 @@ If you prefer to use docker, then proceed with the following steps.
             <li>Use the "Send to" dropdown to select "Complete Record," choose "File," and set the format to FASTA. Download the file and rename it to <code>sequences.fasta</code>.</li>
         </ul>
     </li>
-<img src="images/ncbi.png" alt="ncbi" width="500"> <p> The output should look like this after installation. </p>
+<img src="images/ncbi.png" alt="ncbi" width="500"> <figcaption>Download the combined fasta file.</figcaption>
     <li><strong>Processing FASTA Headers:</strong>
 <p>You can manually edit the headers to match with those in the strain column of metadata file (described below). But for large data, you can follow the following steps.
 </p>
@@ -167,14 +167,14 @@ If you prefer to use docker, then proceed with the following steps.
     <li><code>sequences.fasta</code></li>
     <li><code>reference.fasta</code></li>
 </ul>
-<img src="images/folder.png" alt="folder" width="500"> <p> The <code>rsv_nextstrain</code> folder should have these files. </p>
+<img src="images/folder.png" alt="folder" width="500"> <figcaption>The <code>rsv_nextstrain</code> folder should have these files.</figcaption>
 <p>Create three subfolders within <code>rsv_nextstrain</code>: <code>config</code>, <code>auspice</code>, and <code>results</code>. The <code>config</code> folder should contain the following three files:</p>
 <ul>
     <li><code>auspice_config.json</code></li>
     <li><code>colors.tsv</code></li>
     <li><code>lat_longs.tsv</code></li>
 </ul>
-<img src="images/config.png" alt="config" width="500"> <p> The config folder should have these files. </p>
+<img src="images/config.png" alt="config" width="500"> <figcaption> The config folder should have these files.</figcaption>
 <p>
 	<p> The <code>metadata.tsv</code> file should look like this: </p>
 <table style="width:100%" id="table">
@@ -459,17 +459,17 @@ nextstrain view auspice/
 
 <p><strong>Note:</strong> It is seen that you have to get out of the Nextstrain shell to use this command. However, in some cases, it works inside the Nextstrain shell. To open the link, you need to manually press <code>Ctrl</code> and click on <u>http://127.0.0.1:4000/rsv</u>.</p>
 
-<img src="images/auspice_image.png" alt="Auspice Visualization" width="500"> <p> This is how it should look like. </p>
-<img src="images/auspice_image_clade.png" alt="Auspice Clade Visualization" width="500"> <p> Colouring using clades instead of countries. </p>
+<img src="images/auspice_image.png" alt="Auspice Visualization" width="500"> <figcaption> This is how it should look like. </figcaption>
+<img src="images/auspice_image_clade.png" alt="Auspice Clade Visualization" width="500"> <figcaption>Colouring using clades instead of countries.</figcaption>
 <p>
-Also, since we did not mention the details for the reference sequence they are not visible here. </p>
+Also, since we did not mention the details for the reference sequence they are not visible here. You can choose the use the GenBank format instead of fasta.</p>
 <h2>Conclusion</h2>
 <p>This tutorial provided a step-by-step guide to set up and run a real-time analysis of RSV using Nextstrain. You can now visualize your own data. Remember to refer to the official Nextstrain documentation for more detailed information.</p>
-
+<br>
 <div class="comments-section">
             <h2>Comments/Suggestions</h2>
             <p style="margin-top: 30px">
-    For any inquiries, feel free to contact me 
+    Feel free to contact me 
     <a href="mailto:mail.for.github.pages.sagnik@gmail.com">here</a>.
 </p>
         </div>
