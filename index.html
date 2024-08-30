@@ -83,19 +83,36 @@
 <p>Docker provides a containerized environment, allowing you to run applications with all their dependencies in a consistent environment across different systems.</p>
 
 <h3>Installing Conda:</h3>
-<p>To create a Conda environment for Nextstrain, use the following command:</p>
-<pre><code>conda create -n nex</code></pre>
+<p>
+Firstly, download conda installer from <a href="https://www.anaconda.com/download/success">here</a>.
+</p>
+After installation, run this command: <p>
+<code>bash Anaconda[YOUR VERSION].sh ( $ bash Anaconda3-5.2.0-Linux-x86_64.sh ) </code> Give your version in [YOUR VERSION].
+</p>
+Follow the prompts to install conda. After it is installed, run <code>conda --version</code> to check if installation was successful.
+
+<code>curl -fsSL --proto '=https' https://nextstrain.org/cli/installer/linux | bash</code>
+<p>Use this command to setup conda for Nextstrain.
+</p>
+<code>nextstrain setup --set-default conda --force</code>
+<p> I use the <code>--force</code> argument, but it is optional. </p>
+<img src="images/conda_setup.png" alt="conda setup" width="500"> <p> The output should be should look like after installation. </p>
+<br>
 
 <h3>Installing Docker:</h3>
+<p>
+If you prefer to use docker, then proceed with the following steps. 
+</p>
 <ol>
     <li>Download and install Docker Desktop from <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank">Docker's official site</a>.</li>
-    <li>Ensure that WSL is installed and running.</li>
-    <li>Open Windows PowerShell and install the Nextstrain CLI using the following command:</li>
-    <pre><code>Invoke-RestMethod https://nextstrain.org/cli/installer/windows | Invoke-Expression</code></pre>
-    <li>Set up Docker for Nextstrain:</li>
+    <li>Open the WSL terminal.</li>
+    <li>In Wsl, use the following command to download the Nextstrain CLI:</li>
+    <pre><code>curl -fsSL --proto '=https' https://nextstrain.org/cli/installer/linux | bash</code></pre>
+    <li>Then you can set up Docker for Nextstrain:</li>
     <pre><code>nextstrain setup --set-default docker</code></pre>
     <li>Allow the installation to complete.</li>
 </ol>
+<img src="images/docker_setup.png" alt="docker setup" width="500"> <p> The output should be should look like after installation. </p>
 
 <h3>Checking the Installation:</h3>
 <p>Launch the Nextstrain shell using the command:</p>
@@ -141,7 +158,7 @@
 </ol>
 
 <h2>4. Folder Setup</h2>
-<p>Create a folder named <code>rsv_nextstrain</code> and organize the following files within it:</p>
+<p>While it is not mandatory to create a folder structure like this, it is so that we are on the same page. Create a folder named <code>rsv_nextstrain</code> and organize the following files within it:</p>
 <ul>
     <li><code>metadata.tsv</code></li>
     <li><code>sequences.fasta</code></li>
