@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-<h1>Nextstrain Tutorial: Real-Time Phylogenetic and Phylogeographic Analysis for RSV</h1>
+<h1>Nextstrain Tutorial: Real-Time Phylogenetic and Phylogeographic Analysis for Pathogens</h1>
 
 <h2>Introduction</h2>
 <p>Nextstrain is a powerful bioinformatics tool designed for real-time tracking and analysis of pathogen evolution, with a particular focus on virology and infectious disease surveillance. It provides a platform for creating phylogenetic and phylogeographic analyses that are visually accessible, helping researchers monitor outbreaks, track pathogen mutations, and inform public health responses.</p>
@@ -70,7 +70,7 @@
 <ul>
     <li>To run Ubuntu, open Command Prompt and type:</li>
     <pre><code>ubuntu</code></pre>
-    <li>To exit the terminal, type:</li>
+    <li>To exit the terminal either press <code>Ctrl + D</code>, or type:</li>
     <pre><code>exit</code></pre>
 </ul>
 
@@ -96,7 +96,7 @@ Follow the prompts to install conda. After it is installed, run <code>conda --ve
 </p>
 <code>nextstrain setup --set-default conda --force</code>
 <p> I use the <code>--force</code> argument, but it is optional. </p>
-<img src="images/conda_setup.png" alt="conda setup" width="500"> <figcaption>The output should be should look like after installation.</figcaption>
+<img src="images/conda_setup.png" alt="conda setup" width="500"> <figcaption><i>The output should be should look like after installation.</i></figcaption>
 <br>
 
 <h3>Installing Docker:</h3>
@@ -130,7 +130,7 @@ If you prefer to use docker, then proceed with the following steps.
             <li>Use the "Send to" dropdown to select "Complete Record," choose "File," and set the format to FASTA. Download the file and rename it to <code>sequences.fasta</code>.</li>
         </ul>
     </li>
-<img src="images/ncbi.png" alt="ncbi" width="500"> <figcaption>Download the combined fasta file.</figcaption>
+<img src="images/ncbi.png" alt="ncbi" width="500"> <figcaption><i>Download the combined fasta file.</i></figcaption>
     <li><strong>Processing FASTA Headers:</strong>
 <p>You can manually edit the headers to match with those in the strain column of metadata file (described below). But for large data, you can follow the following steps.
 </p>
@@ -167,14 +167,14 @@ If you prefer to use docker, then proceed with the following steps.
     <li><code>sequences.fasta</code></li>
     <li><code>reference.fasta</code></li>
 </ul>
-<img src="images/folder.png" alt="folder" width="500"> <figcaption>The <code>rsv_nextstrain</code> folder should have these files.</figcaption>
+<img src="images/folder.png" alt="folder" width="500"> <figcaption><i>The <code>rsv_nextstrain</code> folder should have these files.</i></figcaption>
 <p>Create three subfolders within <code>rsv_nextstrain</code>: <code>config</code>, <code>auspice</code>, and <code>results</code>. The <code>config</code> folder should contain the following three files:</p>
 <ul>
     <li><code>auspice_config.json</code></li>
     <li><code>colors.tsv</code></li>
     <li><code>lat_longs.tsv</code></li>
 </ul>
-<img src="images/config.png" alt="config" width="500"> <figcaption> The config folder should have these files.</figcaption>
+<img src="images/config.png" alt="config" width="500"> <figcaption> <i>The config folder should have these files.</i></figcaption>
 <p>
 	<p> The <code>metadata.tsv</code> file should look like this: </p>
 <table style="width:100%" id="table">
@@ -437,7 +437,7 @@ augur tree --alignment results/aligned.fasta --output results/tree_raw.nwk
 augur refine --tree results/tree_raw.nwk --alignment results/aligned.fasta --metadata metadata.tsv --output-tree results/tree.nwk --output-node-data results/branch_lengths.json --timetree --coalescent opt --date-confidence --date-inference marginal --clock-rate 0.00077 --stochastic-resolve
 </code>
 
-<p>We have used the clock rate <code>0.00077</code> or <code>7.7 x 10^-4 subs/base/year</code>.</p>
+<p>We have used the clock rate <code>0.00077</code> or <code>7.7 x 10^-4 subs/base/year</code>. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9985318/">(Reference)</a></p> 
 
 <h2>8. Creating the JSON File</h2>
 
@@ -459,8 +459,8 @@ nextstrain view auspice/
 
 <p><strong>Note:</strong> It is seen that you have to get out of the Nextstrain shell to use this command. However, in some cases, it works inside the Nextstrain shell. To open the link, you need to manually press <code>Ctrl</code> and click on <u>http://127.0.0.1:4000/rsv</u>.</p>
 
-<img src="images/auspice_image.png" alt="Auspice Visualization" width="500"> <figcaption> This is how it should look like. </figcaption>
-<img src="images/auspice_image_clade.png" alt="Auspice Clade Visualization" width="500"> <figcaption>Colouring using clades instead of countries.</figcaption>
+<img src="images/auspice_image.png" alt="Auspice Visualization" width="500"> <figcaption><i> This is how it should look like. </i></figcaption>
+<img src="images/auspice_image_clade.png" alt="Auspice Clade Visualization" width="500"> <figcaption><i>Colouring using clades instead of countries.</i></figcaption>
 <p>
 Also, since we did not mention the details for the reference sequence they are not visible here. You can choose the use the GenBank format instead of fasta.</p>
 <h2>Conclusion</h2>
